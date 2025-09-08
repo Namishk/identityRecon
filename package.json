@@ -1,0 +1,27 @@
+{
+	"name": "identityrecon",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+		"build": "tsc",
+		"start": "node dist/index.js",
+		"db:generate": "drizzle-kit generate",
+		"db:migrate": "drizzle-kit migrate:pg"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"drizzle-orm": "^0.44.5",
+		"express": "^5.1.0",
+		"postgres": "^3.4.7"
+	},
+	"devDependencies": {
+		"@types/express": "^5.0.3",
+		"dotenv": "^17.2.2",
+		"drizzle-kit": "^0.31.4",
+		"ts-node-dev": "^2.0.0",
+		"typescript": "^5.9.2"
+	}
+}
