@@ -10,10 +10,27 @@ export const identifyUser = async (req: Request, res: Response) => {
 		const email = req.body.email;
 		const phoneNumber = req.body.phoneNumber;
 
+		// Build dynamic where conditions to handle null values properly
+		const whereConditions = [];
+		if (email) {
+			whereConditions.push(eq(Contact.email, email));
+		}
+		if (phoneNumber) {
+			whereConditions.push(eq(Contact.phoneNumber, phoneNumber));
+		}
+
+		// If no valid conditions, return empty result
+		if (whereConditions.length === 0) {
+			return res.status(400).json({
+				error: 'Bad request',
+				message: 'Either email or phoneNumber must be provided'
+			});
+		}
+
 		const fetchedRecords = await db
 			.select()
 			.from(Contact)
-			.where(or(eq(Contact.email, email), eq(Contact.phoneNumber, phoneNumber)));
+			.where(or(...whereConditions));
 
 		console.log(fetchedRecords, '\n<---------------------------------- fetched records');
 
@@ -92,10 +109,19 @@ export const identifyUser = async (req: Request, res: Response) => {
 			}
 		}
 
+		// Build conditions for final query
+		const finalWhereConditions = [];
+		if (email) {
+			finalWhereConditions.push(eq(Contact.email, email));
+		}
+		if (phoneNumber) {
+			finalWhereConditions.push(eq(Contact.phoneNumber, phoneNumber));
+		}
+
 		const FinalRecords = await db
 			.select()
 			.from(Contact)
-			.where(or(eq(Contact.email, email), eq(Contact.phoneNumber, phoneNumber)));
+			.where(or(...finalWhereConditions));
 
 		console.log(FinalRecords, '\n<---------------------------------- FinalRecords');
 
